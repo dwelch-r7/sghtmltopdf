@@ -23,9 +23,15 @@ end
 
 ExtensionTask.new("sghtmltopdf", GEMSPEC) do |ext|
   ext.lib_dir = "lib/sghtmltopdf"
-  # RbSys::ExtensionTask reads RUBY_TARGET, which rb-sys-dock sets for every
-  # cross-gem build. Keeping that single target avoids also compiling the
-  # container's host Ruby into a gem for another platform.
+end
+
+# rb-sys-dock has already placed the requested cross-compiled extension in the
+# native gem's stage directory. The packaging task also sees this host-style
+# path in the source gemspec and would otherwise compile it using the
+# container's Linux Ruby while its Cargo target is Windows.
+if ENV["RUBY_TARGET"]
+  host_binary = File.join("lib", "sghtmltopdf", "sghtmltopdf.#{RbConfig::CONFIG["DLEXT"]}")
+  Rake::Task[host_binary].clear if Rake::Task.task_defined?(host_binary)
 end
 
 begin
