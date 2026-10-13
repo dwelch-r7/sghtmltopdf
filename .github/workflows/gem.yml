@@ -1,6 +1,6 @@
 name: gem
 
-# Too heavy to run on every PR (6 platforms x several Ruby ABIs), so it only runs on tags and manual dispatch
+# Too heavy to run on every PR (7 platforms x several Ruby ABIs), so it only runs on tags and manual dispatch
 
 on:
   workflow_dispatch:
@@ -28,7 +28,10 @@ jobs:
           - aarch64-linux-musl # Alpine
           - arm64-darwin
           - x86_64-darwin
-          - x64-mingw32 # Windows (rb-sys-dock cross-compiles to x86_64-pc-windows-gnu)
+        include:
+          # x64-mingw32 is the legacy Windows ABI and is available for Ruby 3.0.
+          - platform: x64-mingw32
+            ruby_versions: "3.0"
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -40,11 +43,9 @@ jobs:
         with:
           platform: ${{ matrix.platform }}
           working-directory: bindings/ruby
-          # Spell out which Ruby ABIs to build for. The default (`default`) covers
-          # every ABI the rb-sys image supports (3.0 and up), and rake-compiler then
-          # overrides the gemspec's `required_ruby_version` to that range, producing a
-          # precompiled gem looser than the gemspec's `>= 3.2.0`. Each ABI also adds 9MB.
-          ruby-versions: "3.2,3.3,3.4,4.0"
+          # Each precompiled gem is restricted to the Ruby range for its ABI.
+          ruby-versions: ${{ matrix.ruby_versions || '3.2,3.3,3.4,4.0' }}
+          pre-script: ${{ matrix.pre_script || '' }}
       - name: Show the bundled Ruby ABIs
         run: |
           gem=$(find bindings/ruby/pkg -name '*-${{ matrix.platform }}.gem')
@@ -90,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["3.2", "3.4"]
+        ruby: ["3.0"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4

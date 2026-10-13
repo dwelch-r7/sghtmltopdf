@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = "https://github.com/waka/sghtmltopdf"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.2.0"
+  spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"

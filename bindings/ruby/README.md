@@ -21,7 +21,9 @@ Point those environments at a separate `sghtmltopdf server` process instead; see
 
 When developing the gem itself on Windows, use RubyInstaller's `ridk exec` environment and install LLVM (for example, `choco install llvm`). The build automatically selects `C:\Program Files\LLVM\bin` for bindgen when it is available.
 
-Requires Ruby >= 3.2.
+Requires Ruby >= 3.0. The Windows `x64-mingw32` precompiled gem supports Ruby
+3.0; Ruby 3.1 and newer use the UCRT ABI and are not covered by this legacy
+Windows artifact.
 
 ## Usage
 

@@ -21,10 +21,10 @@ gem "sghtmltopdf"
 | | 対応 |
 |---|---|
 | プラットフォーム | `x86_64-linux` / `aarch64-linux` / `x86_64-linux-musl` / `aarch64-linux-musl` / `arm64-darwin` / `x86_64-darwin` / `x64-mingw32` |
-| Ruby | 3.2以上 |
+| Ruby | 3.0以上（Windows `x64-mingw32` はRuby 3.0） |
 
 Linuxはglibc(Debian/Ubuntu系)とmusl(Alpine)の両方があり、`gem install`が環境に合うほうを選びます。
-Windowsは`x64-mingw32`のprecompiled gemで利用できます。
+WindowsはRuby 3.0で`x64-mingw32`のprecompiled gemを利用できます。Ruby 3.1以上はUCRT ABIのため、このレガシーartifactの対象外です。
 
 ## 基本
 
