@@ -13,13 +13,17 @@ The engine runs inside your process through a native extension (magnus + rb-sys)
 gem "sghtmltopdf"
 ```
 
-Precompiled native gems are published for `x86_64-linux`, `aarch64-linux`, `x86_64-linux-musl`, `aarch64-linux-musl`, `arm64-darwin`, and `x86_64-darwin`.
+Precompiled native gems are published for `x86_64-linux`, `aarch64-linux`, `x86_64-linux-musl`, `aarch64-linux-musl`, `arm64-darwin`, `x86_64-darwin`, and Windows `x64-mingw32`.
 There is no build step on those platforms.
 
-Elsewhere (Windows) the gem cannot run in-process — the source gem does not carry the Rust core and will refuse to build with an explanatory message.
+Elsewhere the source gem does not carry the Rust core and will refuse to build with an explanatory message.
 Point those environments at a separate `sghtmltopdf server` process instead; see [Delegating to a server](#delegating-to-a-server).
 
-Requires Ruby >= 3.2.
+When developing the gem itself on Windows, use RubyInstaller's `ridk exec` environment and install LLVM (for example, `choco install llvm`). The build automatically selects `C:\Program Files\LLVM\bin` for bindgen when it is available.
+
+Requires Ruby >= 3.0. The Windows `x64-mingw32` precompiled gem supports Ruby
+3.0; Ruby 3.1 and newer use the UCRT ABI and are not covered by this legacy
+Windows artifact.
 
 ## Usage
 

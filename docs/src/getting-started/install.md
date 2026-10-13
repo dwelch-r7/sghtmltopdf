@@ -59,7 +59,7 @@ gem "sghtmltopdf"
 ```
 
 ビルド済み(precompiled)のgemを配布する方針のため、利用側にRustのツールチェインは要りません。
-対応は`x86_64-linux`・`aarch64-linux`(glibc)・`arm64-darwin`・`x86_64-darwin`と、Ruby 3.2以上です。
+対応は`x86_64-linux`・`aarch64-linux`(glibc)・`arm64-darwin`・`x86_64-darwin`・Windows `x64-mingw32`と、Ruby 3.0以上です。Windows `x64-mingw32`はRuby 3.0に対応します。Ruby 3.1以上はUCRT ABIを使用するため、このレガシーWindows artifactの対象外です。
 
 外部プロセスは起動せず、ネイティブ拡張(magnus + rb-sys)として同じプロセスの中で変換します。
 重い処理の間はGVLを解放するので、Pumaの他のスレッドは止まりません。

@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = "https://github.com/waka/sghtmltopdf"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.2.0"
+  spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
@@ -36,4 +36,11 @@ Gem::Specification.new do |spec|
   ]
   spec.require_paths = ["lib"]
   spec.extensions = ["ext/sghtmltopdf/extconf.rb"]
+
+  # TODO: remove before PRing upstream
+  # Required so `extconf.rb` can `require "rb_sys/mkmf"` when the gem is built
+  # from source by a downstream bundle. A gemspec dependency is activated on the
+  # extension-build load path; the dev Gemfile is not seen by consumers.
+  # Keep the version in sync with the Gemfile and the Rust crate's rb-sys pin.
+  spec.add_dependency "rb_sys", "~> 0.9.128"
 end

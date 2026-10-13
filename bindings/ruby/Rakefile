@@ -2,6 +2,9 @@
 
 require "bundler/gem_tasks"
 require "rb_sys/extensiontask"
+require_relative "ext/sghtmltopdf/windows_build_environment"
+
+Sghtmltopdf::WindowsBuildEnvironment.configure
 
 GEMSPEC = Gem::Specification.load("sghtmltopdf.gemspec")
 
@@ -20,13 +23,15 @@ end
 
 ExtensionTask.new("sghtmltopdf", GEMSPEC) do |ext|
   ext.lib_dir = "lib/sghtmltopdf"
-  # oxidize-rb/cross-gem-action
-  ext.cross_compile = true
-  ext.cross_platform = %w[
-    x86_64-linux aarch64-linux
-    x86_64-linux-musl aarch64-linux-musl
-    arm64-darwin x86_64-darwin
-  ]
+end
+
+# rb-sys-dock has already placed the requested cross-compiled extension in the
+# native gem's stage directory. The packaging task also sees this host-style
+# path in the source gemspec and would otherwise compile it using the
+# container's Linux Ruby while its Cargo target is Windows.
+if ENV["RUBY_TARGET"]
+  host_binary = File.join("lib", "sghtmltopdf", "sghtmltopdf.#{RbConfig::CONFIG["DLEXT"]}")
+  Rake::Task[host_binary].clear if Rake::Task.task_defined?(host_binary)
 end
 
 begin
