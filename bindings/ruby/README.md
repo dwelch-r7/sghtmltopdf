@@ -13,7 +13,7 @@ The engine runs inside your process through a native extension (magnus + rb-sys)
 gem "sghtmltopdf"
 ```
 
-Precompiled native gems are published for `x86_64-linux`, `aarch64-linux`, `x86_64-linux-musl`, `aarch64-linux-musl`, `arm64-darwin`, `x86_64-darwin`, and Windows `x64-mingw-ucrt`.
+Precompiled native gems are published for `x86_64-linux`, `aarch64-linux`, `x86_64-linux-musl`, `aarch64-linux-musl`, `arm64-darwin`, `x86_64-darwin`, and Windows `x64-mingw32`.
 There is no build step on those platforms.
 
 Elsewhere the source gem does not carry the Rust core and will refuse to build with an explanatory message.

@@ -28,7 +28,7 @@ jobs:
           - aarch64-linux-musl # Alpine
           - arm64-darwin
           - x86_64-darwin
-          - x64-mingw-ucrt # Windows (rb-sys-dock cross-compiles to x86_64-pc-windows-gnu)
+          - x64-mingw32 # Windows (rb-sys-dock cross-compiles to x86_64-pc-windows-gnu)
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -95,7 +95,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: gem-x64-mingw-ucrt
+          name: gem-x64-mingw32
           path: pkg
       - uses: ruby/setup-ruby@v1
         with:

@@ -4,15 +4,15 @@ require "rbconfig"
 
 module Sghtmltopdf
   module WindowsBuildEnvironment
-    GNU_UCRT_ARCH = "x64-mingw-ucrt"
+    GNU_MINGW_ARCHES = %w[x64-mingw32 x64-mingw-ucrt].freeze
     LLVM_BIN = File.join(ENV.fetch("ProgramFiles", "C:/Program Files"), "LLVM", "bin")
 
     module_function
 
-    # RubyInstaller ships the GNU/UCRT headers but its bundled libclang cannot parse
+    # RubyInstaller ships the GNU headers but its bundled libclang cannot parse
     # the newer intrinsic headers. Prefer a normal LLVM installation when present.
     def configure
-      return unless RbConfig::CONFIG["arch"] == GNU_UCRT_ARCH
+      return unless GNU_MINGW_ARCHES.include?(RbConfig::CONFIG["arch"])
 
       llvm_bin = ENV.fetch("LIBCLANG_PATH", LLVM_BIN)
       llvm_bin = LLVM_BIN unless File.file?(File.join(llvm_bin, "libclang.dll"))

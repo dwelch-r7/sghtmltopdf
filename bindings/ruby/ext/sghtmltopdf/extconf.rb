@@ -16,7 +16,7 @@ unless File.exist?(File.join(core, "Cargo.toml"))
     so a build from source was attempted, but the source gem does not include the
     Rust core and cannot be built.
 
-    Supported platforms: x86_64-linux / aarch64-linux / x86_64-linux-musl / aarch64-linux-musl / arm64-darwin / x86_64-darwin / x64-mingw-ucrt
+    Supported platforms: x86_64-linux / aarch64-linux / x86_64-linux-musl / aarch64-linux-musl / arm64-darwin / x86_64-darwin / x64-mingw32
   MESSAGE
 end
 

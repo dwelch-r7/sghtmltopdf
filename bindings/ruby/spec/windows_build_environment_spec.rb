@@ -7,10 +7,10 @@ RSpec.describe Sghtmltopdf::WindowsBuildEnvironment do
   let(:llvm_bin) { described_class::LLVM_BIN }
   let(:libclang) { File.join(llvm_bin, "libclang.dll") }
 
-  # Pretend to be the mingw-ucrt build host and start from a clean set of build env vars.
-  def on_windows(libclang_present:)
+  # Pretend to be a MinGW build host and start from a clean set of build env vars.
+  def on_windows(arch: described_class::GNU_MINGW_ARCHES.first, libclang_present:)
     allow(RbConfig::CONFIG).to receive(:[]).and_call_original
-    allow(RbConfig::CONFIG).to receive(:[]).with("arch").and_return(described_class::GNU_UCRT_ARCH)
+    allow(RbConfig::CONFIG).to receive(:[]).with("arch").and_return(arch)
     allow(File).to receive(:file?).and_call_original
     allow(File).to receive(:file?).with(libclang).and_return(libclang_present)
 
@@ -22,7 +22,7 @@ RSpec.describe Sghtmltopdf::WindowsBuildEnvironment do
     saved&.each { |key, value| ENV[key] = value }
   end
 
-  it "does nothing on a non-mingw-ucrt arch" do
+  it "does nothing on a non-MinGW arch" do
     allow(RbConfig::CONFIG).to receive(:[]).and_call_original
     allow(RbConfig::CONFIG).to receive(:[]).with("arch").and_return("x86_64-linux")
     before = ENV.to_h
@@ -47,6 +47,14 @@ RSpec.describe Sghtmltopdf::WindowsBuildEnvironment do
 
   it "forces the GNU target so bindgen does not assume the host MSVC ABI" do
     on_windows(libclang_present: true) do
+      described_class.configure
+
+      expect(ENV["BINDGEN_EXTRA_CLANG_ARGS"]).to eq("--target=x86_64-w64-windows-gnu")
+    end
+  end
+
+  it "also configures the GNU target for a UCRT source build" do
+    on_windows(arch: "x64-mingw-ucrt", libclang_present: true) do
       described_class.configure
 
       expect(ENV["BINDGEN_EXTRA_CLANG_ARGS"]).to eq("--target=x86_64-w64-windows-gnu")

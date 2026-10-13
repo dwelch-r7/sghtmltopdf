@@ -29,7 +29,7 @@ ExtensionTask.new("sghtmltopdf", GEMSPEC) do |ext|
     x86_64-linux aarch64-linux
     x86_64-linux-musl aarch64-linux-musl
     arm64-darwin x86_64-darwin
-    x64-mingw-ucrt
+    x64-mingw32
   ]
 end
 
