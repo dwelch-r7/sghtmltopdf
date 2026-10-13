@@ -36,4 +36,11 @@ Gem::Specification.new do |spec|
   ]
   spec.require_paths = ["lib"]
   spec.extensions = ["ext/sghtmltopdf/extconf.rb"]
+
+  # TODO: remove before PRing upstream
+  # Required so `extconf.rb` can `require "rb_sys/mkmf"` when the gem is built
+  # from source by a downstream bundle. A gemspec dependency is activated on the
+  # extension-build load path; the dev Gemfile is not seen by consumers.
+  # Keep the version in sync with the Gemfile and the Rust crate's rb-sys pin.
+  spec.add_dependency "rb_sys", "~> 0.9.128"
 end
