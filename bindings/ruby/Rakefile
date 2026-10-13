@@ -23,14 +23,9 @@ end
 
 ExtensionTask.new("sghtmltopdf", GEMSPEC) do |ext|
   ext.lib_dir = "lib/sghtmltopdf"
-  # oxidize-rb/cross-gem-action
-  ext.cross_compile = true
-  ext.cross_platform = %w[
-    x86_64-linux aarch64-linux
-    x86_64-linux-musl aarch64-linux-musl
-    arm64-darwin x86_64-darwin
-    x64-mingw32
-  ]
+  # RbSys::ExtensionTask reads RUBY_TARGET, which rb-sys-dock sets for every
+  # cross-gem build. Keeping that single target avoids also compiling the
+  # container's host Ruby into a gem for another platform.
 end
 
 begin
